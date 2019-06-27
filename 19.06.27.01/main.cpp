@@ -1,37 +1,53 @@
 #include <iostream>
 #include <algorithm>
-#include <cstring>
-#include<fstream>
+#include <cstdio>
 #define Student_number 5
 #define Teacher_number 7
 using namespace std;
-long long i,j,k;
-char output_headline[1000]={"学号------名字--性别---学院--班级--平均分----号码"};
-char show_headline1[10000]={"学号------------------姓名------性别----------------学院--------------------班级-----分数-----2---------3-------4--------5---------6--------7---------号码-------平均分\n"};
+long long i,j;
+//写的标题
+char headline[10000]={"学号-------姓名---性别-学院--班级----分数----2-----3------4------5------6------7-----号码\n"};
+//屏幕显示的标题
+char output_headline[1000]={"学号------名字-性别-学院----班级---平均分--号码 "};
+//读的标题
+char show_headline1[10000]={"学号-------姓名---性别-学院--班级----分数----2-----3------4------5------6------7-----号码---平均分\n"};
 //{"学号-------姓名------性别--学院---班级-------分数2--3--4--5--6--7-号码\n"};
-//学生结构体（读）
-struct Students1{
-    char id[30];
-    char name[30];
-    char sex[20];
-    char college[50];
-    char st_class[30];
+char headline1[10000];
+//学生结构体 （写）
+struct Students{
+    char id[15];
+    char name[10];
+    char sex[15];
+    char college[15];
+    char st_class[15];
     long long phone;
     double sore[Teacher_number];
     double avg;
     double sum;
     
+}student[Student_number];
+
+//学生结构体（读）
+struct Students1{
+    char id[15];
+    char name[10];
+    char sex[15];
+    char college[15];
+    char st_class[15];
+    double sore[Teacher_number];
+    double avg;
+    double sum;
+    long long phone;
 }student1[Student_number];
-// 老师的结构体
+
 struct Teachers{
     
     char name[30];
-    char  id[30];
+    char  id[15];
     double sore[Student_number];
-    char sex[20];
+    char sex[10];
     
 }teacher[Teacher_number];
-
 
 //给结构体排序
 bool cmp( Students1  &p1,Students1 &p2)
@@ -57,21 +73,87 @@ bool cmp( Students1  &p1,Students1 &p2)
         return 0;
     }
 }
-
-
-int main()
+viod Define_Students()
 {
-    //读老师的数据
-    FILE *p1=NULL;
-    // ifstream p1("/Users/s20181105879/Desktop/teacher.txt");
-     p1=fopen("/Users/s20181105879/Desktop/teacher.txt","r");
-   // p1=fopen("teacher.txt","r");
-    if(!p1)
+    //自己给写学生数据
+    Students student[Student_number]=
+    {
+        
+        //------学号-------姓名-----性别---学院---班级-------分数2--3--4--5--6--7-号码
+        //                                                   号码
+        //        {"2018110","邱健军","男","机械", "机械工程" ,72,72,72,72,72,72,72,1008611},
+        //        {"2018111","二胖", "女" ,"医学院","护理学"  ,88,88,88,88,88,88,88,1008612},
+        //        {"2018112","教授", "男" ,"计算机","飞机学"  ,99,99,99,99,99,99,99,1008613},
+        //        {"2018113","蜗牛", "人妖", "鬼知道","你猜啊" ,11,11,11,11,11,11,11,1008614},
+        //        {"2018114","阳建波","男","计科院","软件工程" ,22,22,22,22,22,22,22,1008615}
+        
+        {"2018110","邱健军","男","机械", "机械工程",1008611},
+        {"2018111","二胖", "女" ,"医学院","护理学"  ,1008612},
+        {"2018112","教授", "男" ,"计算机","飞机学"  ,1008613},
+        {"2018113","蜗牛", "人妖", "鬼知道","你猜啊" ,1008614},
+        {"2018114","阳建波","男","计科院","软件工程" ,1008615}
+    };
+}
+
+viod Write_Students.txt()
+{
+    FILE *p=NULL;
+    p=fopen("student.txt","w");
+    if(!p)
+    {
+        printf("open fail\n");
+        return 0;
+    }
+    // 给文本一个标题
+    fprintf(p,"%s",headline);
+    for( i=0;i<Student_number;i++)
+    {
+        fprintf(p,"%s  ",student[i].id);
+        fprintf(p,"%s  ",student[i].name);
+        fprintf(p,"%s    ",student[i].sex);
+        fprintf(p,"%s  ",student[i].college);
+        fprintf(p,"%s  ",student[i].st_class);
+        fprintf(p,"%s  \n",student[i].phone);
+    }
+    
+    fclose(p);
+    
+}
+
+
+viod Read_student.txt()
+{
+    FILE *fp=NULL;
+    fp=fopen("student.txt","r");
+    if(!fp)
     {
         printf("open fail\n");
         return 0;
     }
     
+    fscanf(p,"%s",headline1);
+    for(i=0;i<Student_number;i++)
+    {
+        
+        fscanf(p,"%s",student1[i].id);
+        fscanf(p,"%s",student1[i].name);
+        fscanf(p,"%s",student1[i].sex);
+        fscanf(p,"%s",student1[i].college);
+        fscanf(p,"%s",student1[i].st_class);
+        fscanf(p,"%lld",&student1[i].phone);
+    }
+    fclose(p);
+    
+}
+viod Read_teacher.txt()
+{
+    FILE *p1=NULL;
+    p1=fopen("teacher.txt","r");
+    if(!p1)
+    {
+        printf("open false\n");
+        return 0;
+    }
     for(i=0;i<Teacher_number;i++)
     {
         fscanf(p1,"%s %s",teacher[i].id,teacher[i].name);
@@ -79,95 +161,91 @@ int main()
         for(j=0;j<Student_number;j++)
         {
             fscanf(p1,"%lf",&teacher[i].sore[j]);
+            student[j].sore[i]=teacher[i].sore[j];
+            
         }
+        
     }
     fclose(p1);
-    
-    
-    
-    //读学生数据
-    //   ifstream yjb("/Users/s20181105879/Desktop/student.txt");
-    FILE *fp=NULL;
-      fp=fopen("/Users/s20181105879/Desktop/student.txt","r");
-   // fp=fopen("student.txt","r");
-    if(!fp)
-    {
-        printf("open fail\n");
-        return 0;
-    }
-    for(i=0;i<Student_number;i++)
-    {
-        fscanf(fp,"%s",student1[i].id);
-        fscanf(fp,"%s",student1[i].name);
-        fscanf(fp,"%s",student1[i].sex);
-        fscanf(fp,"%s",student1[i].college);
-        fscanf(fp,"%s",student1[i].st_class);
-        fscanf(fp,"%lld",&student1[i].phone);
-    }
-    fclose(fp);
-    
-    //
-    for(j=0;j<Student_number;j++)
-    {
-        for(k=0;k<Teacher_number;k++)
-        {
-            student1[j].sore[k]=teacher[k].sore[j];
-        }
-    }
-    //
-    for(i=0;i<Student_number;i++)
-    {
-        sort(student1[i].sore,student1[i].sore+Teacher_number);//给七个分数排序
-        student1[i].sum=0;
-        for(j=1;j<Teacher_number-1;j++)
-        {
-            student1[i].sum+=student1[i].sore[j];
-        }
-        student1[i].avg=student1[i].sum/(Teacher_number-2);
-    }
-    
-    //结构体排序
-    sort(student1,student1+Student_number,cmp);
-    
-    //屏幕显示
-    printf("%s\n",output_headline);
-    for(i=0;i<Student_number;i++)
-    {
-        printf("rank %lld:\n",(i+1));
-        printf("%-10s%-8s%-6s",student1[i].id,student1[i].name,student1[i].sex);
-        printf("%-10s%-10s",student1[i].college,student1[i].st_class);
-        printf("%-6.2f  %-10lld\n",student1[i].avg,student1[i].phone);
-        printf("\n");
-    }
-    //输出文件显示
-    FILE *pp=NULL;
+}
 
-    pp=fopen("/Users/s20181105879/Desktop/show.txt","w");
- //   pp=fopen("show.txt","w");
+
+
+viod Save_show.txt()
+{
+    FILE *pp=NULL;
+    pp=fopen("show.txt","w");
     if(!pp)
     {
-        printf("open false\n");
+        printf("open false1\n");
         return 0;
     }
-    fprintf(pp,"%s",show_headline1);
+    
+    fprintf(pp,"%s\n",show_headline1);
     for(i=0;i<Student_number;i++)
     {
-        fprintf(pp,"rank %4lld:\n",i+1);
-        fprintf(pp,"%-10s",student1[i].id);
-        fprintf(pp,"%-20s",student1[i].name);
-        fprintf(pp,"%-10s",student1[i].sex);
-        fprintf(pp,"%-30s",student1[i].college);
-        fprintf(pp,"%-30s",student1[i].st_class);
+        fprintf(pp,"%s  ",student1[i].id);
+        fprintf(pp,"%s  ",student1[i].name);
+        fprintf(pp,"%s    ",student1[i].sex);
+        fprintf(pp,"%s  ",student1[i].college);
+        fprintf(pp,"%s  ",student1[i].st_class);
         for(int j=0;j<Teacher_number;j++)
         {
-            fprintf(pp,"%-10.2f",student1[i].sore[j]);
+            fprintf(pp,"%.2f  ",student1[i].sore[j]);
         }
-        fprintf(pp,"%-15lld",student1[i].phone);
-        fprintf(pp,"%-10.2f",student1[i].avg);
-        fprintf(pp,"\n\n");
+        fprintf(pp,"%lld   ",student1[i].phone);
+        fprintf(pp,"%.2f",student1[i].avg);
+        fprintf(pp,"\n");
         
     }
     fclose(pp);
+}
+viod Show_Reselt()
+{
+    printf("%s\n",output_headline);
+    for(i=0;i<Student_number;i++)
+    {
+        printf("rank %d:\n",(i+1));
+        printf("%s  %s  %s  ",student1[i].id,student1[i].name,student1[i].sex);
+        printf("%s  %s  ",student1[i].college,student1[i].st_class);
+        printf("%.2f  %lld\n",student1[i].avg,student1[i].phone);
+        printf("\n");
+    }
+}
+void Copy_score()
+{
+    for(i=0;i<Teacher_number;i++)
+    {
+        for(j=0;j<Student_number;j++)
+        {
+            student[j].sore[i]=teacher[i].sore[j];
+        }
+    }
+}
+void viod Dealwith_score()
+{
+    for(i=0;i<Student_number;i++)
+    {
+        sort(student[i].sore,student[i].sore+Teacher_number)
+        student[i].sum=0;
+        for(j=1;j<Teacher_number-1;j++)
+        {
+            student[i].sum+=student[i].sore[j];
+        }
+        student[i].avg=student[i].sum/(Teacher_number-2);
+    }
+}
+int main()
+{
+    viod Define_Students();
+    viod Write_Students.txt();
+    viod Read_student.txt();
+    viod Read_teacher.txt();
+    viod Copy_score();
+    viod Dealwith_score();
+    sort(student1,student1+Student_number,cmp);
+    viod Save_show.txt();
+    viod Show_Reselt();
+    
     return 0;
 }
-
